@@ -14,7 +14,7 @@
     "eslint": "eslint src/",
     "test": "npm run eslint",
     "build": "webpack --mode production",
-    "start": "webpack server --mode development --open --port 9032"
+    "start": "webpack server --mode development --open"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
@@ -30,5 +30,8 @@
   },
   "engines": {
     "node": "16"
+  },
+  "dependencies": {
+    "dayjs": "1.10.7"
   }
 }
