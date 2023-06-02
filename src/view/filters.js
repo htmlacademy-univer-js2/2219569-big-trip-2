@@ -18,21 +18,23 @@ const createFiltersTemplate = () => (
   </form>`
 );
 
-class FiltersView {
-  get _template() {
+export default class FiltersView {
+  #element = null;
+
+  constructor() {
+    this.#element = null;
+  }
+
+  get template() {
     return createFiltersTemplate();
   }
 
   get element() {
-    if(!this._element) {
-      this._element = createElement(this._template);
-    }
-    return this._element;
+    this.#element = this.#element || createElement(this.template);
+    return this.#element;
   }
 
   removeElement() {
-    this._element = null;
+    this.#element = null;
   }
 }
-
-export default FiltersView;

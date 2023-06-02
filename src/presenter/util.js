@@ -1,14 +1,34 @@
-import dayjs from 'dayjs';
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
+const randomInteger = (min, max) => {
+  const random = min + Math.random() * (max + 1 - min);
+  return Math.floor(random);
 };
 
+function upperCaseFirst(str) {
+  if (!str) {
+    return str;
+  }
 
-const humanizeDate = (date, form) => dayjs(date).format(form);
-const humanizeTime = (date) => dayjs(date).format('HH:mm');
-const getDifference = (date1, date2, param) => dayjs(date2).diff(date1, param);
+  return str[0].toUpperCase() + str.slice(1);
+}
 
-export {getRandomInteger, humanizeDate, humanizeTime, getDifference};
+const humanizeDateTime = (dateFrom, dateTo) => {
+  const oneMinuteInMilliseconds = 60 * 1000;
+  const oneHourInMilliseconds = 60 * oneMinuteInMilliseconds;
+  const oneDayInMilliseconds = 24 * oneHourInMilliseconds;
+
+  const datetimeBetween = dateTo.diff(dateFrom);
+  if (datetimeBetween > oneDayInMilliseconds) {
+    return `${parseInt(datetimeBetween / oneDayInMilliseconds, 10)}D ${parseInt(
+      (datetimeBetween % oneDayInMilliseconds) / oneHourInMilliseconds,
+      10
+    )}H ${parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds}M`;
+  } else if (datetimeBetween > oneHourInMilliseconds) {
+    return `${parseInt((datetimeBetween % oneDayInMilliseconds) / oneHourInMilliseconds, 10)}H ${
+      parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds
+    }M`;
+  } else {
+    return `${parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds}M`;
+  }
+};
+
+export { randomInteger, humanizeDateTime, upperCaseFirst };

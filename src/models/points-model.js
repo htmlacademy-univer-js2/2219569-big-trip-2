@@ -1,33 +1,38 @@
-import { COUNT_POINT } from '../const';
-import generatePoint from '../fish_data/point';
-import offersByType from '../fish_data/offer';
-import destinations from '../fish_data/destination';
+import { createDestination } from '../mock/destination';
+import { createOfferByType } from '../mock/offers-by-type';
+import { createPoint } from '../mock/point';
 
-class PointsModel {
+export default class PointModel {
+  #destinations = null;
+  #offersByType = null;
+  #points = null;
+
   constructor() {
-    this._points = Array.from({length: COUNT_POINT}, generatePoint);
-    this._offers = offersByType;
-    this._destinations = destinations;
+    this.#destinations = [];
+    this.#offersByType = [];
+    this.#points = [];
+
+    for (let i = 0; i < 10; i++) {
+      this.#destinations.push(createDestination(i));
+    }
+    for (let i = 0; i < 9; i++) {
+      this.#offersByType.push(createOfferByType(i));
+    }
+
+    for (let i = 0; i < 4; i++) {
+      this.#points.push(createPoint(i));
+    }
   }
 
   get points() {
-    return this._points;
+    return this.#points;
   }
 
-  getOffers(point) {
-    if (point) {
-      return this._offers.find((x) => x.type === point['type'])['offers'];
-    }
-    return this._offers;
+  get destinations() {
+    return this.#destinations;
   }
 
-  getDestination(point) {
-    if (point){
-      return this._destinations.find((x) => x.id === point['destination']);
-    }
-    return this._destinations;
+  get offersByType() {
+    return this.#offersByType;
   }
-
 }
-
-export default PointsModel;
