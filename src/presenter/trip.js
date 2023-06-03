@@ -1,9 +1,10 @@
-import { render } from '../render';
+import { render, RenderPosition } from '../render';
 import PointView from '../view/point';
 import EditPointView from '../view/edit-point';
 import NewPointView from '../view/new-point';
 import SortView from '../view/sort';
-// import TripListView from '../view/trip-list';
+import EmptyPointsListView from '../view/empty-points'
+import InfoView from '../view/info';
 
 export default class Trip {
   #pointsListComponent = new NewPointView();
@@ -63,11 +64,16 @@ export default class Trip {
     this.#destinations = [...this.#pointsModel.destinations];
     this.#offersByType = [...this.#pointsModel.offersByType];
 
-    render(new SortView(), this.#container);
-    render(this.#pointsListComponent, this.#container);
+    if (this.#points.length === 0) {
+      render(new EmptyPointsListView(), this.#container);
+    } else {
+      render(new InfoView(), document.querySelector('.trip-main'), RenderPosition.AFTERBEGIN);
+      render(new SortView(), this.#container);
+      render(this.#pointsListComponent, this.#container);
 
-    for (let i = 0; i < this.#points.length; i++) {
-      this.#renderPoint(this.#points[i]);
+      for (let i = 0; i < this.#points.length; i++) {
+        this.#renderPoint(this.#points[i]);
+      }
     }
   }
 }

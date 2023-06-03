@@ -1,6 +1,6 @@
 import { randomInteger } from '../presenter/util';
 
-const titles = ['Thrall', 'Tyrande', 'Arthas'];
+const titles = ['Economy', 'Comfort', 'Business'];
 
 export const createOffer = (id) => ({
   id: id,
