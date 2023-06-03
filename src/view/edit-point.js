@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbsractView from '../framework/view/abstract-view';
 import { upperCaseFirst } from '../presenter/util';
 import dayjs from 'dayjs';
 
@@ -149,29 +149,31 @@ const createEditPointTemplate = (point, destinations, offersByType) => {
   </li>`;
 };
 
-export default class EditPointView {
+export default class EditPointView extends AbsractView {
   #point = null;
   #destinations = null;
   #offersByType = null;
-  #element = null;
 
   constructor(point, destinations, offersByType) {
+    super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offersByType = offersByType;
-    this.#element = null;
   }
 
   get template() {
     return createEditPointTemplate(this.#point, this.#destinations, this.#offersByType);
   }
 
-  get element() {
-    this.#element = this.#element || createElement(this.template);
-    return this.#element;
-  }
+  setSaveClickHandler = (callback) => {
+    this._callback.saveClick = callback;
 
-  removeElement() {
-    this.#element = null;
-  }
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#saveClickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#saveClickHandler);
+  };
+
+  #saveClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.saveClick();
+  };
 }
