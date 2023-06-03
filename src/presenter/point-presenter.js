@@ -75,6 +75,7 @@ const Mode = {
   
     resetView = () => {
       if (this.#mode !== Mode.DEFAULT) {
+        this.#editPointComponent.reset(this.#point);
         this.#replaceFormToPoint();
       }
     };
@@ -83,6 +84,7 @@ const Mode = {
       if (evt.key === 'Escape' || evt.key == 'Esc') {
         evt.preventDefault();
         this.#replaceFormToPoint();
+        this.#editPointComponent.reset(this.#point);
         // eslint-disable-next-line no-undef
         document.removeEventListener('keydown', onEscKeyDown);
       }
@@ -106,6 +108,7 @@ const Mode = {
     };
   
     #handleCloseForm = () => {
+      this.#editPointComponent.reset(this.#point);
       this.#replaceFormToPoint();
     };
   
