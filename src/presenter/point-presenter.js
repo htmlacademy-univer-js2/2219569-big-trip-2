@@ -1,6 +1,7 @@
 import { render, replace, remove } from '../framework/render';
 import EditPointView from '../view/edit-point';
 import PointView from '../view/point';
+import { UserAction, UpdateType } from '../const';
 
 const Mode = {
     DEFAULT: 'DEFAULT',
@@ -10,8 +11,8 @@ const Mode = {
   export default class PointPresenter {
     #pointsListContainer = null;
   
-    #changeData = null;
     #changeMode = null;
+    #handleDataChange = null;
   
     #pointComponent = null;
     #editPointComponent = null;
@@ -21,11 +22,11 @@ const Mode = {
     #destinations = null;
     #offersByType = null;
   
-    constructor(container, destinations, offersByType, changeData, changeMode) {
+    constructor({ container, destinations, offersByType, changeData, changeMode }) {
       this.#pointsListContainer = container;
       this.#destinations = destinations;
       this.#offersByType = offersByType;
-      this.#changeData = changeData;
+      this.#handleDataChange = changeData;
       this.#changeMode = changeMode;
     }
   
@@ -49,6 +50,7 @@ const Mode = {
         offersByType: this.#offersByType,
         saveClick: this.#handleSaveForm,
         closeClick: this.#handleCloseForm,
+        deleteClick: this.#handleDeletePoint,
       });
   
       if (prevPointComponent === null && prevEditPointComponent === null) {
@@ -81,12 +83,11 @@ const Mode = {
     };
   
     #onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key == 'Esc') {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
         this.#replaceFormToPoint();
         this.#editPointComponent.reset(this.#point);
-        // eslint-disable-next-line no-undef
-        document.removeEventListener('keydown', onEscKeyDown);
+        document.removeEventListener('keydown', this.#onEscKeyDown);
       }
     };
   
@@ -112,11 +113,19 @@ const Mode = {
       this.#replaceFormToPoint();
     };
   
-    #handleSaveForm = () => {
+    #handleSaveForm = (update) => {
+      this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.MINOR, update);
       this.#replaceFormToPoint();
     };
   
     #handleFavouriteClick = () => {
-      this.#changeData({ ...this.#point, isFavorite: !this.#point.isFavorite });
+      this.#handleDataChange(UserAction.UPDATE_POINT, UpdateType.PATCH, {
+        ...this.#point,
+        isFavorite: !this.#point.isFavorite,
+      });
+    };
+
+    #handleDeletePoint = (point) => {
+      this.#handleDataChange(UserAction.DELETE_POINT, UpdateType.MINOR, point);
     };
   }
