@@ -1,5 +1,7 @@
 import AbsractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
+import { SortFunctions } from '../presenter/util';
+import { SortType } from '../const';
 
 const createTripTitleInfo = (points, destinations) => {
   const destinationsOrder = [];
@@ -8,7 +10,6 @@ const createTripTitleInfo = (points, destinations) => {
       destinationsOrder.push(destinations[point.destination].name);
     }
   }
-
   if (destinationsOrder.length === 1) {
     return destinationsOrder[0];
   } else if (destinationsOrder.length > 3) {
@@ -18,9 +19,7 @@ const createTripTitleInfo = (points, destinations) => {
   }
 };
 
-const createDatesInfo = (points) => {
-  return `${dayjs(points[0].dateFrom).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(points[points.length - 1].dateTo).format('MMM D')}`;
-};
+const createDatesInfo = (points) => `${dayjs(points[0].dateFrom).format('MMM D')}&nbsp;&mdash;&nbsp;${dayjs(points[points.length - 1].dateTo).format('MMM D')}`;
 
 const createInfoTemplate = (points, destinations) => {
   const summaryPrice = points.reduce((currentValue, point) => point.basePrice + currentValue, 0);
@@ -46,7 +45,7 @@ export default class InfoView extends AbsractView {
 
   constructor(points, destinations) {
     super();
-    this.#points = points;
+    this.#points = points.sort(SortFunctions[SortType.DAY]);
     this.#destinations = destinations;
   }
 
