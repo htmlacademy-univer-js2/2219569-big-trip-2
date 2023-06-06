@@ -6,7 +6,7 @@ import FiltersModel from './models/filters-model';
 import FiltersPresenter from './presenter/filters-presenter';
 import PointsApiService from './point-api-service';
 
-const AUTHORIZATION = 'Basic sr013klzbdp';
+const AUTHORIZATION = 'Basic sr014kllbdp';
 const END_POINT = 'https://18.ecmascript.pages.academy/big-trip/';
 const pointsApiService = new PointsApiService(END_POINT, AUTHORIZATION);
 
