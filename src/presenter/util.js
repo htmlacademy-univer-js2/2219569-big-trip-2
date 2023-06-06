@@ -1,13 +1,7 @@
 import { FilterType, SortType } from '../const';
 import dayjs from 'dayjs';
 
-
-const randomInteger = (min, max) => {
-  const random = min + Math.random() * (max + 1 - min);
-  return Math.floor(random);
-};
-
-function upperCaseFirst(str) {
+function capitalizeFirst(str) {
   if (!str) {
     return str;
   }
@@ -25,13 +19,14 @@ const humanizeDateTime = (dateFrom, dateTo) => {
     return `${parseInt(datetimeBetween / oneDayInMilliseconds, 10)}D ${parseInt(
       (datetimeBetween % oneDayInMilliseconds) / oneHourInMilliseconds,
       10
-    )}H ${parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds}M`;
+    )}H ${parseInt((datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds, 10)}M`;
   } else if (datetimeBetween > oneHourInMilliseconds) {
-    return `${parseInt((datetimeBetween % oneDayInMilliseconds) / oneHourInMilliseconds, 10)}H ${
-      parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds
-    }M`;
+    return `${parseInt((datetimeBetween % oneDayInMilliseconds) / oneHourInMilliseconds, 10)}H ${parseInt(
+      (datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds,
+      10
+    )}M`;
   } else {
-    return `${parseInt(datetimeBetween % oneHourInMilliseconds, 10) / oneMinuteInMilliseconds}M`;
+    return `${parseInt((datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds, 10)}M`;
   }
 };
 
@@ -57,4 +52,4 @@ const FilterFunctions = {
   },
 };
 
-export { randomInteger, humanizeDateTime, upperCaseFirst, isDateBefore, SortFunctions, FilterFunctions };
+export { humanizeDateTime, capitalizeFirst, isDateBefore, SortFunctions, FilterFunctions };

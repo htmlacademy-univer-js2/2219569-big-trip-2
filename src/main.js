@@ -2,14 +2,17 @@ import { render } from './framework/render';
 import Trip from './presenter/trip';
 import PointsModel from './models/points-model';
 import MenuView from './view/menu';
-import DestinationsModel from './models/destinations-model';
-import OffersByTypeModel from './models/offers-by-type-model';
 import FiltersModel from './models/filters-model';
 import FiltersPresenter from './presenter/filters-presenter';
+import PointsApiService from './point-api-service';
 
-const pointsModel = new PointsModel();
-const destinationsModel = new DestinationsModel();
-const offersByTypeModel = new OffersByTypeModel();
+const AUTHORIZATION = 'Basic sr013klzbdp';
+const END_POINT = 'https://18.ecmascript.pages.academy/big-trip/';
+const pointsApiService = new PointsApiService(END_POINT, AUTHORIZATION);
+
+const pointsModel = new PointsModel({
+    pointsApiService: pointsApiService,
+  });
 const filterModel = new FiltersModel();
 
 const tripContainer = document.querySelector('.trip-events');
@@ -26,11 +29,10 @@ const tripPresenter = new Trip({
   menuContainer: menuContainer,
   pointsModel: pointsModel,
   filtersModel: filterModel,
-  destinationsModel: destinationsModel,
-  offersByTypeModel: offersByTypeModel,
 });
 
 render(new MenuView(), document.querySelector('.trip-controls__navigation'));
 
-tripPresenter.init(pointsModel);
+pointsModel.init();
+tripPresenter.init();
 filtersPresenter.init();
