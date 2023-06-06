@@ -1,7 +1,6 @@
 import { UpdateType, UserAction } from '../const';
 import { RenderPosition, remove, render } from '../framework/render';
 import EditPointView from '../view/edit-point';
-import { nanoid } from 'nanoid';
 
 export default class NewPointPresenter {
   #destinations = null;
@@ -37,6 +36,24 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving = () => {
+    this.#newPointComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
+  setAborting = () => {
+    const resetFromState = () => {
+      this.#newPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+      });
+    };
+
+    this.#newPointComponent.shake(resetFromState);
+  };
+
   destroy() {
     if (this.#newPointComponent === null) {
       return;
@@ -55,8 +72,7 @@ export default class NewPointPresenter {
   };
 
   #handleSaveClick = (point) => {
-    this.#handleChangeData(UserAction.ADD_POINT, UpdateType.MAJOR, { ...point, id: nanoid() });
-    this.destroy();
+    this.#handleChangeData(UserAction.ADD_POINT, UpdateType.MAJOR, point);
   };
 
   #handleCloseClick = () => {
