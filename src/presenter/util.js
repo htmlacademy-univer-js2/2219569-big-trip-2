@@ -25,9 +25,8 @@ const humanizeDateTime = (dateFrom, dateTo) => {
       (datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds,
       10
     )}M`;
-  } else {
-    return `${parseInt((datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds, 10)}M`;
   }
+  return `${parseInt((datetimeBetween % oneHourInMilliseconds) / oneMinuteInMilliseconds, 10)}M`;
 };
 
 const isFirstDateBeforeSecond = (dateFrom, dateTo) => dayjs(dateTo).diff(dayjs(dateFrom)) > 0;

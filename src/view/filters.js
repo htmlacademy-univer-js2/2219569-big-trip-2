@@ -1,12 +1,12 @@
 import { capitalizeFirst } from '../presenter/util';
 import AbsractView from '../framework/view/abstract-view';
 
-const createFilterItemTemplate = (filter, currentFilter) => `
+const createFilterItemTemplate = ({type, isEmpty}, currentFilter) => `
     <div class="trip-filters__filter">
       <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter"
-      ${filter.type === currentFilter ? 'checked' : ''} ${filter.isEmpty ? 'disabled' : ''}>
-      <label class="trip-filters__filter-label" for="filter-${filter.type}" data-name="${filter.type}" 
-      data-disabled="${filter.isEmpty ? 'true' : 'false'}">${capitalizeFirst(filter.type)}</label>
+      ${type === currentFilter ? 'checked' : ''} ${isEmpty ? 'disabled' : ''}>
+      <label class="trip-filters__filter-label" for="filter-${type}" data-name="${type}" 
+      data-disabled="${isEmpty ? 'true' : 'false'}">${capitalizeFirst(type)}</label>
     </div>
 `;
 
@@ -37,11 +37,8 @@ export default class FiltersView extends AbsractView {
   }
 
   #filterChangeHandler = (evt) => {
-    if (evt.target.tagName === 'LABEL') {
-      const target = evt.target;
-      if (target.dataset.disabled === 'false') {
-        this.#filterChange(target.dataset.name);
-      }
+    if (evt.target.tagName === 'LABEL' && event.target.dataset.disabled === 'false') {
+      this.#filterChange(evt.target.dataset.name);
     }
   };
 }
