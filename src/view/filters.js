@@ -1,4 +1,4 @@
-import { upperCaseFirst } from '../presenter/util';
+import { capitalizeFirst } from '../presenter/util';
 import AbsractView from '../framework/view/abstract-view';
 
 const createFilterItemTemplate = (filter, currentFilter) => `
@@ -6,7 +6,7 @@ const createFilterItemTemplate = (filter, currentFilter) => `
       <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter"
       ${filter.type === currentFilter ? 'checked' : ''} ${filter.isEmpty ? 'disabled' : ''}>
       <label class="trip-filters__filter-label" for="filter-${filter.type}" data-name="${filter.type}" 
-      data-disabled="${filter.isEmpty ? 'true' : 'false'}">${upperCaseFirst(filter.type)}</label>
+      data-disabled="${filter.isEmpty ? 'true' : 'false'}">${capitalizeFirst(filter.type)}</label>
     </div>
 `;
 

@@ -20,12 +20,12 @@ const Mode = {
     #point = null;
     #mode = Mode.DEFAULT;
     #destinations = null;
-    #offersByType = null;
+    #offers = null;
   
-    constructor({ container, destinations, offersByType, changeData, changeMode }) {
+    constructor({ container, destinations, offers, changeData, changeMode }) {
       this.#pointsListContainer = container;
       this.#destinations = destinations;
-      this.#offersByType = offersByType;
+      this.#offers = offers;
       this.#handleDataChange = changeData;
       this.#changeMode = changeMode;
     }
@@ -39,7 +39,7 @@ const Mode = {
       this.#pointComponent = new PointView({
         point: point,
         destinations: this.#destinations,
-        offersByType: this.#offersByType,
+        offersByType: this.#offers,
         editClick: this.#handleEditClick,
         favoriteClick: this.#handleFavouriteClick,
       });
@@ -47,7 +47,7 @@ const Mode = {
       this.#editPointComponent = new EditPointView({
         point: point,
         destinations: this.#destinations,
-        offersByType: this.#offersByType,
+        offersByType: this.#offers,
         saveClick: this.#handleSaveForm,
         closeClick: this.#handleCloseForm,
         deleteClick: this.#handleDeletePoint,
