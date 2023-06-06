@@ -11,8 +11,8 @@ const END_POINT = 'https://18.ecmascript.pages.academy/big-trip/';
 const pointsApiService = new PointsApiService(END_POINT, AUTHORIZATION);
 
 const pointsModel = new PointsModel({
-    pointsApiService: pointsApiService,
-  });
+  pointsApiService: pointsApiService,
+});
 const filterModel = new FiltersModel();
 
 const tripContainer = document.querySelector('.trip-events');
