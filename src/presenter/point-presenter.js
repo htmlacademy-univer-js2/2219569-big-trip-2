@@ -160,3 +160,4 @@ const Mode = {
       this.#handleDataChange(UserAction.DELETE_POINT, UpdateType.MAJOR, point);
     };
   }
+  
