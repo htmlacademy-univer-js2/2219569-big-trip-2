@@ -79,7 +79,7 @@ const createDestinationTemplate = ({ destination }) => {
 
 const createEditPointTemplate = (point, destinations, offersByType) => {
   let { dateFrom, dateTo } = point;
-  const { basePrice, destination, type, offers, isDisabled, isDeleting, isSaving } = point;
+  const { id, basePrice, destination, type, offers, isDisabled, isDeleting, isSaving } = point;
 
   dateFrom = dayjs(dateFrom);
   dateTo = dayjs(dateTo);
@@ -88,6 +88,12 @@ const createEditPointTemplate = (point, destinations, offersByType) => {
   const typesTemplate = createTypesTemplate(offersByType);
   const destinationsOptionsTemplate = createDestinationsOptionsTemplate(destinations);
   const destinationTemplate = createDestinationTemplate(point);
+
+  const deleteButton = isDeleting ? 'Deleting...' : 'Delete';
+  const rollUpButton =
+  `<button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
+    <span class="visually-hidden">Open event</span>
+  </button>`
 
   return `
   <li class="trip-events__item">
@@ -137,10 +143,8 @@ const createEditPointTemplate = (point, destinations, offersByType) => {
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
         ${isSaving ? 'Saving...' : 'Save'}</button>
         <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
-        ${isDeleting ? 'Deleting...' : 'Delete'}</button>
-        <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
-          <span class="visually-hidden">Open event</span>
-        </button>
+        ${id ? deleteButton : 'Cancel'}</button>
+        ${id ? rollUpButton : ``}
       </header>
       <section class="event__details">
         ${offersTemplate}
@@ -192,15 +196,23 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeClickHandler);
-    this.element.querySelector('.event__save-btn').addEventListener('click', this.#saveClickHandler);
-    this.element.querySelector('.event__input--price').addEventListener('input', this.#priceInputHandler);
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('blur', this.#destinationChangeHandler);
-    this.element.querySelector('.event__available-offers').addEventListener('click', this.#offersCheckHandler);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#deleteClickHandler);
+    this.checkQuerySelector('.event__rollup-btn', 'click', this.#closeClickHandler);
+    this.checkQuerySelector('.event__save-btn', 'click', this.#saveClickHandler);
+    this.checkQuerySelector('.event__input--price', 'input', this.#priceInputHandler);
+    this.checkQuerySelector('.event__type-group', 'change', this.#typeChangeHandler);
+    this.checkQuerySelector('.event__input--destination', 'blur', this.#destinationChangeHandler);
+    this.checkQuerySelector('.event__available-offers', 'click', this.#offersCheckHandler);
+    this.checkQuerySelector('.event__reset-btn', 'click', this.#deleteClickHandler);
     this.#setDateFromPicker();
     this.#setDateToPicker();
+  }
+
+  checkQuerySelector(event, action, handler) {
+    let elem = this.element.querySelector(event)
+    if (!elem){
+      return;
+    }
+    return elem.addEventListener(action, handler);
   }
 
   reset(point) {
@@ -211,6 +223,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.#dateFromPicker = flatpickr(this.element.querySelector('#event-start-time-1'), {
       dateFormat: 'd/m/y H:i',
       defaultDate: this._state.dateFrom,
+      minDate: this._state.DateFrom,
       onClose: this.#dateFromChangeHandler,
       enableTime: true,
     });
@@ -220,6 +233,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.#dateToPicker = flatpickr(this.element.querySelector('#event-end-time-1'), {
       dateFormat: 'd/m/y H:i',
       defaultDate: this._state.dateTo,
+      minDate: this._state.dateFrom,
       onClose: this.#dateToChangeHandler,
       enableTime: true,
     });

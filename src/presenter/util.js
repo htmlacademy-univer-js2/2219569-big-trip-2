@@ -34,9 +34,9 @@ const isFirstDateBeforeSecond = (dateFrom, dateTo) => dayjs(dateTo).diff(dayjs(d
 const SortFunctions = {
   [SortType.DAY]: (firstPoint, secondPoint) => dayjs(firstPoint.dateFrom).diff(dayjs(secondPoint.dateFrom)),
   [SortType.TIME]: (firstPoint, secondPoint) =>
-    dayjs(secondPoint.dateFrom).diff(dayjs(secondPoint.dateTo)) -
-    dayjs(firstPoint.dateFrom).diff(dayjs(firstPoint.dateTo)),
-  [SortType.PRICE]: (firstPoint, secondPoint) => firstPoint.basePrice - secondPoint.basePrice,
+    dayjs(firstPoint.dateFrom).diff(dayjs(firstPoint.dateTo)) -
+    dayjs(secondPoint.dateFrom).diff(dayjs(secondPoint.dateTo)),
+  [SortType.PRICE]: (firstPoint, secondPoint) => secondPoint.basePrice - firstPoint.basePrice,
 };
 
 const FilterFunctions = {
