@@ -67,6 +67,7 @@ export default class Trip {
   createPoint() {
     this.#currentSortType = SortType.DAY;
     this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    remove(this.#emptyPointsListComponent)
     this.#newPointPresenter.init();
   }
 
@@ -187,11 +188,6 @@ export default class Trip {
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
   };
 
-  #renderMenu = () => {
-    this.#renderNewPointButton();
-    this.#renderInfo();
-  };
-
   #renderNewPointButton = (isDisabled) => {
     if (this.#newPointButtonComponent === null) {
       this.#newPointButtonComponent = new NewPointButtonView({ buttonClick: this.#handleNewPointButtonClick, isDisabled: isDisabled });
@@ -217,6 +213,9 @@ export default class Trip {
   };
 
   #handleNewPointClose = () => {
+    if (this.points.length === 0) {
+      this.#renderEmptyPointsList();
+    }
     this.#newPointButtonComponent.element.disabled = false;
   };
 
